@@ -7,18 +7,17 @@ const Symbols = [
 
 const view = {
   getCardElement(index) {
+    return `<div data-index="${index}" class="card back"></div>`;
+  },
+  getCardContent(index) {
     // const number = (index % 13) + 1;
     const number = this.transformNumber((index % 13) + 1);
     const symbol = Symbols[Math.floor(index / 13)];
     return `
- 
-      <div class="card">
-        <p>${number}</p>
+         <p>${number}</p>
         <img src="${symbol}" />
         <p>${number}</p>
-      </div>
-
-    `;
+     `;
   },
   transformNumber(number) {
     switch (number) {
@@ -42,8 +41,21 @@ const view = {
       .map((index) => this.getCardElement(index))
       .join("");
   },
-};
 
+  // flipCard
+  flipCard(card) {
+    console.log(card.dataset.index);
+    if (card.classList.contains("back")) {
+      // 回傳正面
+      card.classList.remove("back");
+      card.innerHTML = this.getCardContent(Number(card.dataset.index));
+      return;
+    }
+    // 回傳背面
+    card.classList.add("back");
+    card.innerHTML = null;
+  },
+};
 // get random number array
 const utility = {
   getRandomNumberArray(count) {
@@ -53,7 +65,7 @@ const utility = {
     for (let index = number.length - 1; index > 0; index--) {
       let randomIndex = Math.floor(Math.random() * (index + 1));
       //  陣列裡的元素交換
-      console.log("QQ", randomIndex, index);
+      // console.log("QQ", randomIndex, index);
       [number[index], number[randomIndex]] = [
         number[randomIndex],
         number[index],
@@ -70,3 +82,8 @@ const utility = {
 
 view.displayCards();
 // console.log(utility.getRandomNumberArray(5));
+document.querySelectorAll(".card").forEach((card) => {
+  card.addEventListener("click", (event) => {
+    view.flipCard(card);
+  });
+});
