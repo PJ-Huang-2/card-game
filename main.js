@@ -1,3 +1,12 @@
+// 設定遊戲狀態
+const GAME_STATE = {
+  FirstCardAwaits: "FirstCardAwaits",
+  SecondCardAwaits: "SecondCardAwaits",
+  CardsMatchFailed: "CardMatchFailed",
+  CardsMatched: "CardsMatched",
+  GameFinished: "GameFinished",
+};
+
 const Symbols = [
   "./images/spades.png", // 黑桃
   "./images/hearts.png", // 愛心
@@ -33,13 +42,12 @@ const view = {
         return number;
     }
   },
-  displayCards() {
+  displayCards(indexes) {
     const rootElement = document.querySelector("#cards");
     // rootElement.innerHTML = Array.from(Array(52).keys())
-    rootElement.innerHTML = utility
-      .getRandomNumberArray(52)
-      .map((index) => this.getCardElement(index))
-      .join("");
+    rootElement.innerHTML =
+      // utility.getRandomNumberArray(52)
+      indexes.map((index) => this.getCardElement(index)).join("");
   },
 
   // flipCard
@@ -54,6 +62,18 @@ const view = {
     // 回傳背面
     card.classList.add("back");
     card.innerHTML = null;
+  },
+};
+
+// 宣告Model
+const model = {
+  revealedCards: [],
+};
+const controller = {
+  currentState: GAME_STATE.FirstCardAwaits, // 加在第一行
+
+  generateCards() {
+    view.displayCards(utility.getRandomNumberArray(52));
   },
 };
 // get random number array
@@ -80,7 +100,8 @@ const utility = {
   },
 };
 
-view.displayCards();
+// view.displayCards();
+controller.generateCards();
 // console.log(utility.getRandomNumberArray(5));
 document.querySelectorAll(".card").forEach((card) => {
   card.addEventListener("click", (event) => {
