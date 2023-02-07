@@ -98,7 +98,7 @@ const view = {
     const div = document.createElement("div");
     div.classList.add("completed");
     div.innerHTML = `
-      <p>Complete！</p>
+      <p>Complete ！</p>
       <p>Score: ${model.score}</p>
       <p>You've tried: ${model.triedTimes} times</p>
     `;
